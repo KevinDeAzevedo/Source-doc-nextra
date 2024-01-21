@@ -67,12 +67,12 @@ const config: DocsThemeConfig = {
 
   </>,
   project: {
-    link: 'https://github.com/shuding/nextra-docs-template',
+    link: 'https://github.com/KevinDeAzevedo/Source-doc-nextra',
   },
   chat: {
     link: 'https://discord.com',
   },
-  docsRepositoryBase: 'https://github.com/shuding/nextra-docs-template',
+  docsRepositoryBase: 'https://github.com/KevinDeAzevedo/Source-doc-nextra/blob/main',
   footer: {
     text: 'Source documentation v.0.1',
   },
