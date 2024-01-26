@@ -1,3 +1,9 @@
 {
-  "loginMethod": "Login Method"
+  "loginMethod": "Login Method",
+  "workspace": "Workspace",
+  "users": "Users",
+  "dashboard": "Dashboard",
+  "notifications": "Notifications",
+  "payementsMethods": "Payements Methods",
+  "documentation": "Documentation"
 }
