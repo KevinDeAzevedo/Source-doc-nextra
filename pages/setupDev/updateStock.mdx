@@ -1,0 +1,44 @@
+# Update the stock
+
+What is inside the UPDATE Querry ? (prepare your newStock and id values)
+
+this code performs a PATCH request to a specific URL with JSON data to update the stock of a product. It also handles potential errors that may occur during the execution of the request.
+
+````js
+const options = {
+  headers: {
+    "authorization": `Bearer ${process.env.STORE_SECRET_TOKEN}`,
+    "Content-Type": "application/json",
+  },
+  method: "PATCH", 
+  credentials: "include",
+  body: JSON.stringify({
+    stock: `${newStock}`
+  })
+};
+
+try {
+  let res = await fetch(`${process.env.SOURCE_URL}/api/product/${id}`, options);
+  if (res.status !== 200) {
+    console.log(res.status);
+  }
+  return res.json();
+} catch (error) {
+  console.error(error.message);
+}
+````
+1. **Creation of the `options` Object:**
+    - An object named **`options`** is created to specify the parameters of the HTTP request. It contains the following elements:
+        - **`headers`**: An object defining the request headers, including an authorization header (Bearer token) extracted from the **`STORE_SECRET_TOKEN`** environment variable, and the "Content-Type" header set to "application/json".
+        - **`method`**: The HTTP method used in the request, set to "PATCH".
+        - **`credentials`**: The "credentials" option is set to "include," indicating that authentication information should be included with the request.
+        - **`body`**: The data to be sent in the request body, formatted as a JSON object containing a "stock" property with the value of the **`newStock`** variable.
+2. **Execution of the HTTP Request with `fetch`:**
+    - Use of the **`fetch`** function to perform an HTTP request to the URL specified by **`process.env.SOURCE_URL`** with the path "/api/product/" followed by the product identifier (**`id`**).
+    - The options defined in the **`options`** object are provided to configure the request.
+3. **Handling the Response of the Request:**
+    - Checking the status of the response (**`res.status`**). If the status is not equal to 200, it indicates an incorrect response or an error. In this case, the status is logged to the console (**`console.log(res.status)`**).
+4. **Retrieving JSON Data:**
+    - If the request is successful (status 200), the **`res.json()`** function is used to extract and return the JSON data from the response.
+5. **Error Handling:**
+    - If an error occurs during the execution of the request or processing of the response, it is caught in the **`catch`** block. The error is logged to the console (**`console.error(error.message)`**).

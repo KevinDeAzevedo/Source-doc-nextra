@@ -1,0 +1,23 @@
+# Basket button
+
+````js
+import {AddCart} from 'source-package';
+import 'source-package/dist/theme/addCart.css';
+
+<AddCart class="standard-add-cart-button"
+  data-item-id=""
+  data-item-price=""
+  data-item-description=""
+  data-item-image=""
+  data-item-name=""
+  data-name-button="Add to cart" />
+````
+
+| Name | Attribute |	Description	| Required | Type |
+| :-- | :-- | :-- | :-- | :-- |
+| ID | `data-item-id` | Unique identifier of your product | true | string |
+| Price | `data-item-price` | The amount € | true | number |
+| Description | `data-item-description` | Product’s description | false | string |
+| Image | `data-item-image` | Path of product’s image (URL) | false | string |
+| Name | `data-item-name` | Denomination | true | string |
+| Name Button	| `data-name-button` | Action button’s name | true | string |

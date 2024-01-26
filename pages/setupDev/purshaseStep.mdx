@@ -1,0 +1,145 @@
+# Purshase step
+
+## Hosted on Stripe
+
+Look official documentation on [https://stripe.com/docs/checkout/quickstart](https://stripe.com/docs/checkout/quickstart)
+
+Install the package and import it into your code. If you're starting from scratch and need a package.json file, you can also download the project files using the download link in the code editor.
+
+## Configure the server
+
+````shell
+npm install --save stripe
+````
+
+`server.js`
+````js
+// This is a public sample test API key.
+// Don’t submit any personally identifiable information in requests made with this key.
+// Sign in to see your own test API key embedded in code samples.
+const stripe = require('stripe')('sk_test_VePHdqKTYQjKNInc7u56JBrQ');
+const express = require('express');
+const app = express();
+app.use(express.static('public'));
+
+const YOUR_DOMAIN = 'http://localhost:4242';
+
+app.post('/create-checkout-session', async (req, res) => {
+  const session = await stripe.checkout.sessions.create({
+    line_items: [
+      {
+        // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
+        price: '{{PRICE_ID}}',
+        quantity: 1,
+      },
+    ],
+    mode: 'payment',
+    success_url: `${YOUR_DOMAIN}?success=true`,
+    cancel_url: `${YOUR_DOMAIN}?canceled=true`,
+  });
+
+  res.redirect(303, session.url);
+});
+
+app.listen(4242, () => console.log('Running on port 4242'));
+````
+
+### Create a Checkout session
+
+Add an endpoint to your server that creates a[session Checkout](https://stripe.com/docs/api/checkout/sessions). A Checkout session controls what information your customer can see on the payment page, such as invoice items, order amount and currency, and accepted payment methods. By default, we enable credit cards and other payment methods that you use frequently, but you can enable and disable payment methods directly from the [Stripe Dashboard](https://dashboard.stripe.com/settings/payment_methods) .
+
+### Define a product to sell
+
+Always keep sensitive information about your product inventory (price, availability, etc.) on your server so that no customer can modify it. Set your product information when you create the Checkout session using [predefined pricing IDs](https://stripe.com/docs/payments/accept-a-payment?platform=web&ui=checkout#create-product-prices-upfront) , or on the fly with the setting [price_data](https://stripe.com/docs/api/checkout/sessions/create#create_checkout_session-line_items-price_data).
+
+### Choose mode
+
+Checkout offers three modes: **`payment`**, **`subscription`**or **`setup`**. Use the mode **`payment`**for one-time purchases. Consult the documentation to learn more about [subscription](https://stripe.com/docs/billing/subscriptions/build-subscriptions) and [setup](https://stripe.com/docs/payments/save-and-reuse?platform=checkout) modes .
+
+### Provide success and cancellation URL’s
+
+Provide URLs for payment confirmation or cancellation pages. Make sure they are publicly accessible so Stripe can redirect customers there. You can also manage confirmation and cancellation states with the same URL.
+
+### Redirect to Checkout
+
+After creating the session, redirect your client to the Checkout page URL returned in the response.
+
+## Create your payment page
+
+`app.js`
+````js
+import React, { useState, useEffect } from "react";
+import "./App.css";
+
+const ProductDisplay = () => (
+  <section>
+    <div className="product">
+      <img
+        src="https://i.imgur.com/EHyR2nP.png"
+        alt="The cover of Stubborn Attachments"
+      />
+      <div className="description">
+      <h3>Stubborn Attachments</h3>
+      <h5>$20.00</h5>
+      </div>
+    </div>
+    <form action="/create-checkout-session" method="POST">
+      <button type="submit">
+        Checkout
+      </button>
+    </form>
+  </section>
+);
+
+const Message = ({ message }) => (
+  <section>
+    <p>{message}</p>
+  </section>
+);
+
+export default function App() {
+  const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    // Check to see if this is a redirect back from Checkout
+    const query = new URLSearchParams(window.location.search);
+
+    if (query.get("success")) {
+      setMessage("Order placed! You will receive an email confirmation.");
+    }
+
+    if (query.get("canceled")) {
+      setMessage(
+        "Order canceled -- continue to shop around and checkout when you're ready."
+      );
+    }
+  }, []);
+
+  return message ? (
+    <Message message={message} />
+  ) : (
+    <ProductDisplay />
+  );
+}
+````
+## Add an order overview page
+
+Add a page to preview the customer's order. Give them the opportunity to check or modify their order. Once a customer is redirected to the Checkout page, the order is final and cannot be modified without creating a new Checkout session.
+
+### Add a payement button
+
+Add a button to your order overview page. When the customer clicks this button, they are redirected to the payment form hosted by Stripe.
+
+## Test you page
+
+### Before running the application
+
+Add **`“proxy”: “<http://localhost:4242>”`**to your file **`package.json`**when developing locally.
+
+### Run the application
+
+Start your server and navigate to [http://localhost:3000/checkout](http://localhost:3000/checkout)
+
+````shell
+npm run start
+````

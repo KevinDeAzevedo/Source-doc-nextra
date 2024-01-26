@@ -1,0 +1,14 @@
+# Display product by ID
+
+````js
+import {ProductDetails, GetProduct} from 'source-package';
+import 'source-package/dist/theme/productList.css';
+
+export default function Page() {
+	return (
+		<>
+			<ProductDetails product={GetProduct}/>
+		</>
+	)
+}
+````

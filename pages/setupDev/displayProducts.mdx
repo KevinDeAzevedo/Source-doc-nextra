@@ -1,0 +1,93 @@
+import { Callout } from 'nextra/components'
+
+# Display the products
+
+`page.jsx`
+`````js
+import {ProductList, AllProducts} from 'source-package';
+import 'source-package/dist/theme/productList.css';
+
+export default function Page() {
+	return (
+		<>
+			<ProductList products={AllProducts}/>
+		</>
+	)
+}
+`````
+
+1. **Imports:**
+    - Two elements, **`ProductList`** and **`AllProducts`**, are imported from the 'source-package' module. These elements are likely components or data provided by the 'source-package'.
+    - Additionally, the CSS file associated with the **`ProductList`** component is imported from the 'theme' folder within the 'source-package'.
+2. **Function Declaration (`Page`):**
+    - A default export is declared, which is a functional component named **`Page`**.
+3. **Component Rendering:**
+    - The **`Page`** component returns JSX (JavaScript XML) encapsulated within a fragment (**`<>...</>`**).
+    - Within the JSX, the **`ProductList`** component is utilized. The **`products`** prop of **`ProductList`** is assigned the value of **`AllProducts`**, indicating that the **`ProductList`** component will display a list of products, and these products are provided by the variable **`AllProducts`**.
+
+<Callout type="warning" emoji="⚠️">
+  IMPORTANT SETUP SECURITY : Config your .env file
+</Callout>
+
+``````.env
+STORE_SECRET_TOKEN=your-store-token
+SOURCE_URL=path-url-of-source
+``````
+## What is the query inside the AllProducts props ?
+
+`````js
+const options = {
+    headers: {
+      authorization: `Bearer ${process.env.STORE_SECRET_TOKEN}`,
+    }
+  };
+
+try {
+    let res = await fetch(`${process.env.SOURCE_URL}/api/products`, options);
+    if (res.status !== 200) {
+      console.log(res.status)
+    }
+    return res.json();
+  } catch (error) {
+    console.log(error.message)
+  }
+`````
+
+1. Request Options (**`options`**):
+- The request options are configured with an authorization header (**`Authorization`**) containing a Bearer access token. The token is retrieved from the **`STORE_SECRET_TOKEN`** environment variable using **`process.env`**.
+
+1. API Call (**`fetch`**):
+- The **`fetch`** function is used to make the request to the specified URL, which is also based on an environment variable (**`SOURCE_URL`**).
+If the response (**`res`**) has a status code other than 200, the code logs the status to the console.
+
+1. Response Handling:
+- If the request is successful (status 200), the JSON content of the response is returned with **`res.json()`**.
+In case of failure, an exception is caught, and the error message is logged to the console.
+
+## Example Source API response
+
+````json
+{
+  "products": [
+    {
+      "id": "644a5c24cc1383022535fc7c",
+			"stock": "10",
+			"unique": "false",
+      "title": "Sneakers Nike",
+      "description": "High quality shoes",
+      "slug": "sneakers-nike",
+			"colors": ["Blue", "White", "Black"],
+			"sizes": ["38","39.5","40","41","42","42.5"],
+			"imagePath": "/644a5c24cc1383022535fc7c-image.jpeg",
+			"price": 120,
+      "createdAt": "2023-04-27T11:27:32.419Z",
+      "updatedAt": "2023-04-27T11:27:32.419Z"
+    }
+  ],
+  "totalProducts": 1,
+  "limit": 10,
+  "totalPages": 1,
+  "page": 1,
+  "pageCounter": 1,
+}
+````

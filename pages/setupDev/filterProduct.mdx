@@ -1,0 +1,29 @@
+# Filter yout product
+
+## Paginate all products list
+
+````js
+const result = await AllProducts.find({
+  depth: 2,
+  page: 1,
+  limit: 10,
+  pagination: false, // If you want to disable pagination count
+  sort: '-title',
+  locale: 'en',
+  fallbackLocale: false,
+  overrideAccess: false,
+  showHiddenFields: true,
+})
+````
+## Filter by product id 
+
+````js
+const result = await AllProducts.findByID({
+	id: '291kd031230lds33921',
+  depth: 2,
+  locale: 'en',
+  fallbackLocale: false,
+  overrideAccess: false,
+  showHiddenFields: true,
+})
+````

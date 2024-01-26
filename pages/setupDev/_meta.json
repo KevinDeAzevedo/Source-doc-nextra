@@ -1,3 +1,11 @@
 {
-  "installation": "Installation"
+  "installation": "Installation",
+  "displayProducts": "Display the products",
+  "displayProduct": "Display product by ID",
+  "filterProduct": "Filter yout product",
+  "updateStock": "Update the stock",
+  "shoppingCart": "Shopping cart",
+  "abandonedCarts": "Abandoned carts",
+  "basketButton": "Basket button",
+  "purshaseStep": "Purshase step"
 }

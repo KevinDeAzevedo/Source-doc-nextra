@@ -1,0 +1,44 @@
+import { Tabs } from 'nextra/components'
+
+# Shopping cart
+
+<Tabs items={['react', 'vue']}>
+  <Tabs.Tab>
+    ````js
+    import {ShoppingCart} from 'source-package';
+    import 'source-package/dist/theme/shoppingCart.css';
+
+export default function Page() {
+	return (
+		<>
+			<ShoppingCart />
+		</>
+	)
+}
+    ````
+  </Tabs.Tab>
+  <Tabs.Tab>
+  ````js
+  <template>
+  <div>
+    <ShoppingCart />
+  </div>
+</template>
+
+<script>
+import { ShoppingCart } from 'source-package';
+import 'source-package/dist/theme/shoppingCart.css';
+
+export default {
+  components: {
+    ShoppingCart,
+  },
+};
+</script>
+
+<style scoped>
+/* Styles spécifiques au composant, si nécessaire */
+</style>
+  ````
+  </Tabs.Tab>
+</Tabs>
